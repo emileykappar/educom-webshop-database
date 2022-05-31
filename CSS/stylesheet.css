@@ -1,0 +1,94 @@
+
+#pageContainer{ /* The pageContainer makes sure to place content together with the same background-color, allignment, margin, etc */
+  background-color: white;
+  width:800px;
+  text-align: left;
+  margin: auto;
+  font-size: 12px;
+  color: dimgrey;
+}
+h1{ /* Changes the header style*/
+  min-height: 48px;
+  text-align: center;
+  color: black;
+}
+body{
+	background-color: white;
+}
+ul.navBar{ /* Changes style of the MENU from unordered list to navigation bar with lightblue background and black rounded borders*/
+	list-style-type: none;
+	margin: 0;
+	padding:0;
+	
+}
+ul.navBar li{
+	display: inline;
+}
+ul.navBar li > a {
+	text-decoration: none;
+	font-size: 20px;
+	background-color: lightblue;
+	color: white;
+	border:1px solid black;
+}
+label{
+	width:120px;
+	display: inline-block;
+}
+ul.hobbies li{
+	list-style-type: square;
+	font-size: 12px;
+	color: dimgrey;
+}
+.error {
+	color: #FF0000;
+}
+option{
+	font-size: 12px;
+	background-color: white;
+	color: dimgrey;
+}
+input{ /* All text input has width of 400px; */
+	width: 400px;
+
+}
+input[type=radio]{ /* Input type=radio is on auto-width */
+	width: auto;
+}
+input[type=submit]{ /* Input type=submit is on auto-width */
+	width: auto;
+}
+textarea{
+	width: 400px;
+}
+label.contact{
+	background-color: white;
+	font-size: 12px;
+	color: dimgrey;
+}
+select{ /* Dropdown menu is styled here*/
+	background-color: white;
+	font-size: 12px;
+	color: dimgrey;
+}
+.communicatie{
+	font-size: 12px;
+	color: dimgrey;
+}
+button.submit{/* The submit button is styled here*/
+	background-color: white;
+	color: dimgrey;
+	font-size: 12px;
+	padding: 6px 20px;
+}
+footer{ /* Changes the footer style */
+	position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: black;
+    color: white;
+    text-align: right;
+}
+
+
