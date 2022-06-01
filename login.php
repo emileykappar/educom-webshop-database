@@ -22,9 +22,10 @@ function validateLogin() {
         }
         $user = authenticateUser($email, $password);
         if (empty($user)) {                
-            $emailError = "Gebruiker niet bekend of Wachtwoord incorrect";
+            $emailError = "Gebruiker niet bekend of wachtwoord incorrect";
         } else {
             $name = $user['name'];
+            $password = $user['password'];
         }
         
         // This if/else statement checks if all the errors are empty and shows if the form is valid or not.

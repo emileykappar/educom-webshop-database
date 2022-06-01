@@ -3,9 +3,12 @@
 
 //////////////////// This is the main application websop DATABASE //////////////////////
 
-// start session
-
+// start session in session manager
 require_once("session_manager.php");
+
+// include database
+include_once 'USERS/data_acces_layer.php';
+
 // variable $page is defined to bring user to the right webpage with GET or POST request
 $page = getRequestedPage();
 $data = processRequest($page);
@@ -50,9 +53,7 @@ function processRequest($page) {
             require_once("session_manager.php");
             
 			$data = validateLogin();
-            
 			if ($data['valid']) {
-				doLoginUser($data['name']);
 				$page = "home";
             } 
 			break;
@@ -143,7 +144,7 @@ function showMenu() {
 	showMenuItem("contact", " Contact ");
     
     if (isUserLoggedIn()) {
-        showMenuItem("logout", "Log uit " . getLoggedInUserName());
+        showMenuItem("logout", "Log uit - " . getLoggedInUserName());
         } else {
         showMenuItem("register", " Registreren ");
         showMenuItem("login", " Log in ");

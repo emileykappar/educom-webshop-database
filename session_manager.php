@@ -8,7 +8,6 @@ function doLoginUser($name) {
 };
 
 function isUserLoggedIn() {
-    
     return isset($_SESSION["login"]);
 };
 

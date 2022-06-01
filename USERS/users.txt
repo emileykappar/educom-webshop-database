@@ -1,5 +1,5 @@
 email|name|password
-em@gmail.com|emiley|123
-em1@gmail.com|emiley|123
+em@gmail.com|Emiley|123
+em1@gmail.com|Em|123
 dec@gmail.com|Dec|123
-jan@gmail.com|jan|123
+jan@gmail.com|Jan|123

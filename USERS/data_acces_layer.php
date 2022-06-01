@@ -1,40 +1,47 @@
 <?php
-$servername = "localhost:3306";
-$username = "username";
-$password = "password";
-$dbname = "Emileys_webshop"
+
+// in this function the connection is created with the database
+
+function connectToDatabase() {
+    $servername = "localhost";
+    $username = "WebShopUser";
+    $password = "Emswebshopuser123!";
+    $dbname = "emileys_webshop";
 
 
-// Create connection
-$conn = mysqli_connect($servername, $username, $password, $dbname);
+    // Create connection
+    $conn = mysqli_connect($servername, $username, $password, $dbname);
 
-// Check connection
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
+    // Check connection
+    if (!$conn) {
+    throw new Exception("Connection failed: " . mysqli_connect_error());
+    }    
+    return $conn;
+};
+
+    //mysqli_close($conn);
+
+
+// find user by email
+
+function findUserByEmail($email) {
+    
+    // set variables 
+    $conn = connectToDatabase(); // $conn now holds the function that creates the connection with the DB
+    $sql = "SELECT email FROM users WHERE email = '".$email."' "; // selects the right email from DB
+try {// triggers exception in a "try" block: so if the email is found and there is no exception this code is executed
+
+    // mysqli_query runs the query (request of info) and puts the resulting data into a variable called $result.
+    $result = mysqli_query($conn, $sql);
+    if(!$result) {
+        throw new Exception("Find user query failed, SQL: " . $sql . "error" . mysqli_error($conn));
+    }    
+} catch (Exception $e) { // if there is an exception, this catch echo's the Exception message. 
+        echo $e->getMessage();
+    return $user;
 }
-
-// Create database
-$sql = "Create Emiley's webshop";
-if (mysqli_query($conn, $sql)) {
-    echo "Database created successfully";
-} else {
-    echo "Error creating database: " . mysqli_error($conn);
-}
-
-// sql to create table // Used to uniquely identify the rows in a table //Each row must contain a value for that column, null values are not allowed
-$sql = "CREATE TABLE users (
-id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-firstname VARCHAR(30) NOT NULL,
-lastname VARCHAR(30) NOT NULL,
-email VARCHAR(50),
-reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-)";
-
-if (mysqli_query($conn, $sql)) {
-  echo "Table MyGuests created successfully";
-} else {
-  echo "Error creating table: " . mysqli_error($conn);
-}
-
-mysqli_close($conn);
+    finally {
+        mysqli_close($conn);
+    }
+};
 ?>
