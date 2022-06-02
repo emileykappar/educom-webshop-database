@@ -51,9 +51,10 @@ function processRequest($page) {
 			require_once("login.php");
             require_once("user_service.php");
             require_once("session_manager.php");
-            
+           
 			$data = validateLogin();
 			if ($data['valid']) {
+                doLoginUser($name);
 				$page = "home";
             } 
 			break;
@@ -218,7 +219,9 @@ function showFooter(){
           <p> &copy; 2022, Emiley Kappar </p>
 	      </footer>";
 };
-
+function LogServer($message) {
+    echo 'Log into server' . $message;
+}
 
 ?>
 

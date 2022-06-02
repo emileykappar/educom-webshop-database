@@ -20,14 +20,19 @@ function validateLogin() {
         if (empty($password)) {
             $passwordError="Wachtwoord verplicht";
         }
-        $user = authenticateUser($email, $password);
-        if (empty($user)) {                
-            $emailError = "Gebruiker niet bekend of wachtwoord incorrect";
-        } else {
-            $name = $user['name'];
-            $password = $user['password'];
+        try {
+            $user = authenticateUser($email, $password);
+            var_dump($user);
+            if (empty($user)) {                
+                $emailError = "Gebruiker niet bekend of wachtwoord incorrect";
+            } else {
+                $name = $user['name'];
+            } 
+        } catch (Exception $e) { // if there is an exception, this catch echo's the Exception message. 
+            LogServer('autenticatie failed : '. $e->getMessage());
+            $emailError = "Er is een technisch probleem, probeer later nog een keer";
         }
-        
+    
         // This if/else statement checks if all the errors are empty and shows if the form is valid or not.
         if (empty($emailError) && empty($passwordError)){
                   $valid = true;
@@ -38,6 +43,7 @@ function validateLogin() {
    
     return array("email" => $email, "emailError" => $emailError, "password" => $password, 
                  "passwordError" => $passwordError, "name" => $name, "valid" => $valid);
+
 };
 	
 function showLoginForm($data) { 
