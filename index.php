@@ -1,7 +1,7 @@
 
 <?php
 
-//////////////////// This is the main application websop DATABASE //////////////////////
+//////////////////// This is the main application webshop DATABASE //////////////////////
 
 // start session in session manager
 require_once("session_manager.php");
@@ -33,44 +33,46 @@ function processRequest($page) {
             if ($data['valid']) {
                 $page = "thanks";
             }
-            break;
+        break;
             
         case "register":
             require_once("register.php");
             require_once("user_service.php");
-            require_once("session_manager.php");
             $data = validateRegister();
-            doesEmailExist($email);
             if ($data['valid']) {
-                storeUser($data);
+                storeUser($data['name'], $data['email'], $data['password']);
                 $page = "login";
             }
-            break;
+        break;
 		
 		case "login":
 			require_once("login.php");
-            require_once("user_service.php");
-            require_once("session_manager.php");
-           
 			$data = validateLogin();
 			if ($data['valid']) {
-                doLoginUser($name);
+                doLoginUser($data['name']);
 				$page = "home";
             } 
-			break;
+		break;
+        
         case "logout":
             require_once("home.php");
             require_once("user_service.php");
-            require_once("session_manager.php");
             
             doLogoutUser();
             $page = "home";
     }
     $data['page'] = $page;
+    $data['menu'] = array("home" => " Home ", "about" => " About ", "contact" => " Contact ");
+    if (isUserLoggedIn()) {
+        $data['menu']['logout'] = " Log uit - " . getLoggedInUserName() . " ";
+    } else {
+        $data['menu']['register'] = " Registreren ";
+        $data['menu']['login'] = " Log in ";
+    }
     return $data;
-}
-// Show the requested page 
+};
 
+// Show the requested page 
 function showResponsePage($data) {
 	beginDocument(); // no $page included as it stays the same on every page!
 	showHeadSection();
@@ -119,7 +121,7 @@ function showHeadSection() {
 function showBodySection($data) {
 	echo '<body> <div id="pageContainer">' . PHP_EOL; // PHP_EOL; The correct 'End Of Line' symbol for this platform. 
 	showHeader($data['page']);
-    showMenu();
+    showMenu($data);
     showContent($data); 
     showFooter();
 	echo '</div></body>' . PHP_EOL;
@@ -138,19 +140,12 @@ function showHeader($page) {
 };
 
 // This function shows the navigation menu:
-function showMenu() {
-	echo '<ul class="navBar">' . PHP_EOL;
-	showMenuItem("home", " Home ");
-	showMenuItem("about", " About ");
-	showMenuItem("contact", " Contact ");
-    
-    if (isUserLoggedIn()) {
-        showMenuItem("logout", "Log uit - " . getLoggedInUserName());
-        } else {
-        showMenuItem("register", " Registreren ");
-        showMenuItem("login", " Log in ");
+function showMenu($data) {
+    echo '<ul class="navBar">' . PHP_EOL;
+    foreach($data['menu'] as $link => $label) {
+       showMenuItem($link, $label);
     }
-	echo '</ul>';
+    echo '</ul>';
 };
 
 // This function shows the menu items

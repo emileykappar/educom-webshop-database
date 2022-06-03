@@ -6,11 +6,7 @@ function validateRegister() {
     $name = $email = $password = $r_password = ""; // Empty variables as they will be declared/filled in by the user that registers on the website 
     $nameError = $emailError = $passwordError = $r_passwordError = ""; // Empty variables as they will be declared later in the function
     $valid = false;
-    
-    // Set session variables for login and logout
-    $_SESSION["username"] = $email;
-    $_SESSION["password"] = $password;
-    $_SESSION["name"] = $name;
+
 
     // If/else statement checks whether the form has been submitted using $_SERVER["REQUEST_METHOD"]
     // If the REQUEST_METHOD is POST, then the form has been submitted.
@@ -18,15 +14,12 @@ function validateRegister() {
 
     if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
-        // Add user input  to the user.txt file if request method == post
-        
-    
         // Testing of input
         $name =   testInput(getPostVar("name"));
         $email = testInput(getPostVar("email"));
         $password = testInput(getPostVar("password"));
         $r_password = testInput(getPostVar("r_password"));
-  
+        
         if (empty($name)){  // If "name" is empty (not filled in) show error message "Name required"
             $nameError="Naam verplicht";
         } 
@@ -42,21 +35,26 @@ function validateRegister() {
         if ($r_password != $password) { // checks if password and repeated password are the same
             $r_passwordError="Wachtwoord komt niet overeen"; 
         } 
-        
-          
+            
         // This if/else statement checks if all the errors are empty and therefore if the form is valid or not.  
-        if (empty($nameError) && empty($emailError) && empty($passwordError) && empty($r_passwordError)){
-            $valid = true;
-        } else {
-            $valid = false;
+        if (empty($nameError) && empty($emailError) && empty($passwordError) && empty($r_passwordError)) {
+            try { 
+                $user = doesEmailExist($email);
+                if (!empty($user)) {
+                    $emailError = "Email al in gebruik";
+                } else { 
+                    $valid = true;
+                } 
+            } catch (Exception $e) { // if there is an exception, this catch echo's the Exception message. 
+                LogServer('autenticatie failed : '. $e->getMessage());
+                $emailError = "Er is een technisch probleem, probeer later nog eens";
+              } 
         }
     }
-
     return array("name" => $name, "nameError" => $nameError, "email" => $email, "emailError" => $emailError,
                  "password" => $password, "passwordError" =>$passwordError, "r_password" => $r_password,
-                 "r_passwordError" => $r_passwordError, "valid" => $valid);
-  
-}
+                 "r_passwordError" => $r_passwordError, "valid" => $valid); 
+};
       
     
 function showRegisterForm($data) { // Show the next part only when $valid is false

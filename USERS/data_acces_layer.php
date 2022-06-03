@@ -1,7 +1,6 @@
 <?php
 
-// in this function the connection is created with the database
-
+// connection is created with the database
 function connectToDatabase() {
     $servername = "localhost";
     $username = "WebShopUser";
@@ -22,27 +21,69 @@ function connectToDatabase() {
     //mysqli_close($conn);
 
 
-// find user by email
-
+// find user by email to see if user exitst (login form)
 function findUserByEmail($email) {
-    
+   
     // set variables 
     $conn = connectToDatabase(); // $conn now holds the function that creates the connection with the DB
     $sql = "SELECT * FROM users WHERE email = '".$email."' "; // selects the right email from DB
-try {// function is triggered in a "try" block: so if the email is found and there is no exception the normal code is executed
-
-    // mysqli_query runs the query (request of info) and puts the resulting data into a variable called $result.
-    $result = mysqli_query($conn, $sql);
     
-    if(!$result) {
-        throw new Exception("Find user query failed, SQL: " . $sql . "error" . mysqli_error($conn));
-    } else { 
-        $user = mysqli_fetch_assoc($result); // fetches a row from table as an associative array, $result is required!
-        // var_dump($user);
-        return $user;
+    try {// function is triggered in a "try" block: so if the email is found and there is no exception the normal code is executed
+
+        // mysqli_query runs the query (request of info) and puts the resulting data into a variable called $result.
+        $result = mysqli_query($conn, $sql);
+    
+        if(!$result) {
+            throw new Exception("Find user query failed, SQL: " . $sql . "error" . mysqli_error($conn));
+        } else { 
+            $user = mysqli_fetch_assoc($result); // fetches a row from table as an associative array, $result is required!
+            // var_dump($user);
+            return $user;
+        }
     }
-} finally {
-        mysqli_close($conn);
+    finally {
+    mysqli_close($conn);
     }
 };
+
+// find email to see if email adress is already used to create an account (register form)
+function doesEmailExist($email) {
+
+    // set variables 
+    $conn = connectToDatabase(); // $conn now holds the function that creates the connection with the DB
+    $sql = "SELECT * FROM users WHERE email = '".$email."' "; // selects (looks for) the email that user put in
+    
+    try { // code if there is NO exception
+        $result = mysqli_query($conn, $sql); // mysqli_query runs the query (request of info) and puts the resulting data into a variable called $result.
+    
+        if(!$result) {
+            throw new Exception("Data could not be retrieved, SQL: " . $sql . "error" . mysqli_error($conn)); // no result will show error message in CATCH
+        } else { // if there is a result; the result is returned.
+            $user = mysqli_fetch_assoc($result); // fetches a row from table as an associative array, $result is required!
+            //var_dump($user);
+            return $user;
+        }
+    }
+    finally {
+    mysqli_close($conn);
+    }
+};
+
+function storeUser($name, $email, $password) {
+ 
+    // set variables 
+    $conn = connectToDatabase(); // $conn now holds the function that creates the connection with the DB
+    $sql = "INSERT INTO users (name, email, password) VALUES ('$name', '$email', '$password') "; // insert new user into DB
+          
+    $result = mysqli_query($conn, $sql);
+        if(!$result) {
+            echo 'Store new user query failed, SQL: ' . $sql . 'error' . mysqli_error($conn);
+        }
+        mysqli_close($conn);
+       
+};
+
+    
+
+
 ?>

@@ -20,29 +20,28 @@ function validateLogin() {
         if (empty($password)) {
             $passwordError="Wachtwoord verplicht";
         }
-        try {
-            $user = authenticateUser($email, $password);
-            var_dump($user);
-            if (empty($user)) {                
-                $emailError = "Gebruiker niet bekend of wachtwoord incorrect";
-            } else {
-                $name = $user['name'];
-            } 
-        } catch (Exception $e) { // if there is an exception, this catch echo's the Exception message. 
-            LogServer('autenticatie failed : '. $e->getMessage());
-            $emailError = "Er is een technisch probleem, probeer later nog een keer";
-        }
-    
         // This if/else statement checks if all the errors are empty and shows if the form is valid or not.
-        if (empty($emailError) && empty($passwordError)){
-                  $valid = true;
-        } else {
-                  $valid = false;
+        if (empty($emailError) && empty($passwordError)) {
+            try {
+                require_once("user_service.php");
+                $user = authenticateUser($email, $password);
+                
+                //var_dump($user);
+                if (empty($user)) {                
+                    $emailError = "Gebruiker niet bekend of wachtwoord incorrect";
+                } else {
+                    $name = $user['name'];
+                    $valid = true;
+                }
+            } catch (Exception $e) { // if there is an exception, this catch echo's the Exception message. 
+                LogServer('autenticatie failed : '. $e->getMessage());
+                $emailError = "Er is een technisch probleem, probeer later nog eens";
+              }   
         }
     }
    
     return array("email" => $email, "emailError" => $emailError, "password" => $password, 
-                 "passwordError" => $passwordError, "name" => $name, "valid" => $valid);
+                 "passwordError" => $passwordError,"name" => $name, "valid" => $valid);
 
 };
 	
