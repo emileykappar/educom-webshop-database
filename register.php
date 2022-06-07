@@ -78,7 +78,9 @@ function showRegisterForm($data) { // Show the next part only when $valid is fal
   <br>
   
   <label for="password">Wachtwoord:</label>
-  <input type="password" name="password" id="password" 
+  <input type="password" name="password" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*[|]).{8,}" 
+  title="Must contain at least one number, one uppercase and one lowercase letter,
+  at least 8 or more characters and cannot use the | character"
   value="'.$data['password'].'">
   <span class="error">* ' . $data['passwordError'] . ' </span>
   <br>
