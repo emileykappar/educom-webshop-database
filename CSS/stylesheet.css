@@ -81,6 +81,12 @@ button.submit{/* The submit button is styled here*/
 	font-size: 12px;
 	padding: 6px 20px;
 }
+.products{
+	float: left;
+	width: 20%;
+	margin: 20px;
+	display: inline;
+}
 footer{ /* Changes the footer style */
 	position: fixed;
     left: 0;

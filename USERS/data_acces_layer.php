@@ -93,20 +93,57 @@ function showProducts() {
         if(!$result) {
             throw new Exception("Webshop could not be retrieved, SQL: " . $sql . "error" . mysqli_error($conn));
         } else {
-            while($products =  mysqli_fetch_assoc($result)) { 
-                echo ' <span>
-                <div><img src="Images/' .  $products["filename"] .'" width="200"> 
-                Naam: ' . $products["name"] . ' 
-                Prijs: ' . $products["price"] . '  </div></span>';
-                }
-            return $products;
-        }
+            while($products =  mysqli_fetch_assoc($result)) {
+                echo '<form method="GET" action="index.php"> 
+                <span><div> <input type="image" src="Images/' .  $products["filename"] .'" width="200"> <br>
+                ' . $products["name"] . ' <br>
+                €' . $products["price"] . ' <br> </div></span> 
+                <input type="hidden" id="page" name="page" value="product details" >
+                </form>';  
+            }
+        return $products;
+        }  
     }
     finally {
-        mysqli_close($conn);
+    mysqli_close($conn);
+    }
+}; 
+
+function getProductDetails() {
+
+    $id = "";
+    $conn = connectToDatabase();
+    $sql = "SELECT * from products WHERE id= '".$id."'";
+    $result = mysqli_query($conn, $sql);
+
+    while($products = mysqli_fetch_assoc($result)) {
+    
+        switch($sql){
+            case "1":
+                $id = 1;
+                echo '
+                <div class="products">  <img src="Images/' .  $products["filename"] .'" width="500">
+                <h4>' . $products["name"] . ' <br>
+                €' . $products["price"] . ' <br></h4>
+                ' . $products["description"] . ' </div> ';
+
+            case "2":
+                $id = 2;
+                echo '
+                <div class="products">  <img src="Images/' .  $products["filename"] .'" width="500">
+                <h4>' . $products["name"] . ' <br>
+                €' . $products["price"] . ' <br></h4>
+                ' . $products["description"] . ' </div> ';
+
         }
+    }
+    mysqli_close($conn);
+    
+
+    
 };
-      
+
+  
 
 
 ?>

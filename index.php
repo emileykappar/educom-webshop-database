@@ -60,7 +60,23 @@ function processRequest($page) {
             
             doLogoutUser();
             $page = "home";
+
+        break;
+
+        case "webshop":
+            require_once("webshop.php");
+            //if(method="GET") {}
+        
+        break;
+
+        case "product details":
+            require_once("product_details.php");
+            
+            
+
+            
     }
+    // $page into $data array
     $data['page'] = $page;
     $data['menu'] = array("home" => " Home ", "about" => " About ", "contact" => " Contact ", "webshop" => " Webshop ");
     if (isUserLoggedIn()) {
@@ -101,8 +117,6 @@ function getUrlVar($key, $default="") {
 // This function starts the document:
 
 function beginDocument() {
-    
-    
     echo "<!DOCTYPE html> 
             <html>";
 };
@@ -197,6 +211,11 @@ function showContent($data){
             require_once("webshop.php");
             showWebshopContent();
             break;
+        
+        case "product details" :
+            require_once("product_details.php");
+            showProductDetails();
+            break;
             
         case "other" :
             require_once("other.php");
@@ -215,7 +234,11 @@ function testInput($data) {
   
 // This function shows the footer
 function showFooter(){
-    echo "<footer> <!-- Creates the footer -->
+    echo "
+    <br><br>
+    <br><br>
+    
+    <footer> <!-- Creates the footer -->
           <p> &copy; 2022, Emiley Kappar </p>
             </footer>";
 };

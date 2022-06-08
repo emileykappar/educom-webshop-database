@@ -4,18 +4,18 @@ function showWebshopContent() {
     echo '<h2>Webshop</h2>
         <hr>
       
-    <p> <!-- Small welcoming text -->
+    <p> 
         Welkom op de webshop!<br>
         Je kunt hier terecht voor leuke honden speeltjes en accesoires.<br>
         Heb je een vraag? Stel deze dan via het contactformulier! :) <br>
       </p> ' ;
 
-    // retrieve products from DB
-    echo '<b>Informatie producten</b>: <br><br> ';
-    $products = showProducts();
+    echo '<h3>Informatie producten:</h3> <br><br> ';
 
-    
+    // retrieve products from DB
+    showProducts();
 };
+
 
 
 ?>
