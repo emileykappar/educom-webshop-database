@@ -62,7 +62,7 @@ function processRequest($page) {
             $page = "home";
     }
     $data['page'] = $page;
-    $data['menu'] = array("home" => " Home ", "about" => " About ", "contact" => " Contact ");
+    $data['menu'] = array("home" => " Home ", "about" => " About ", "contact" => " Contact ", "webshop" => " Webshop ");
     if (isUserLoggedIn()) {
         $data['menu']['logout'] = " Log uit - " . getLoggedInUserName() . " ";
     } else {
@@ -157,7 +157,7 @@ function showMenuItem($link, $label) {
 
 // This function shows the content per page. 
 function showContent($data){
-    switch ($data['page']){
+    switch ($data['page']) {
         case "home" :
             require_once("home.php");
             showHomeContent();
@@ -191,6 +191,11 @@ function showContent($data){
         case "logout" :
             require_once("home.php");
             doLogoutUser();
+            break;
+
+        case "webshop" :
+            require_once("webshop.php");
+            showWebshopContent();
             break;
             
         case "other" :

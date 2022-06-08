@@ -65,8 +65,8 @@ function doesEmailExist($email) {
         }
     }
     finally {
-    mysqli_close($conn);
-    }
+        mysqli_close($conn);
+        }
 };
 
 function storeUser($name, $email, $password) {
@@ -83,7 +83,30 @@ function storeUser($name, $email, $password) {
        
 };
 
-    
+function showProducts() {
+
+    $conn = connectToDatabase();
+    $sql = "SELECT id, filename, name, price FROM products";
+
+    try {
+        $result = mysqli_query($conn, $sql);
+        if(!$result) {
+            throw new Exception("Webshop could not be retrieved, SQL: " . $sql . "error" . mysqli_error($conn));
+        } else {
+            while($products =  mysqli_fetch_assoc($result)) { 
+                echo ' <span>
+                <div><img src="Images/' .  $products["filename"] .'" width="200"> 
+                Naam: ' . $products["name"] . ' 
+                Prijs: ' . $products["price"] . '  </div></span>';
+                }
+            return $products;
+        }
+    }
+    finally {
+        mysqli_close($conn);
+        }
+};
+      
 
 
 ?>
