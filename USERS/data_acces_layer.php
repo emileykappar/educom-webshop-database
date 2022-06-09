@@ -84,7 +84,6 @@ function storeUser($name, $email, $password) {
 };
 
 function showProducts() {
-
     $conn = connectToDatabase();
     $sql = "SELECT id, filename, name, price FROM products";
 
@@ -95,10 +94,12 @@ function showProducts() {
         } else {
             while($products =  mysqli_fetch_assoc($result)) {
                 echo '<form method="GET" action="index.php"> 
-                <span><div> <input type="image" src="Images/' .  $products["filename"] .'" width="200"> <br>
+                <input type="image" src="Images/'.$products["filename"].'" > <br>
                 ' . $products["name"] . ' <br>
-                €' . $products["price"] . ' <br> </div></span> 
-                <input type="hidden" id="page" name="page" value="product details" >
+                €' . $products["price"] . ' <br>
+                <input type="hidden" name="page" value="product_details">
+                <input type="hidden" name="id" value="'.$products["id"].'">
+                
                 </form>';  
             }
         return $products;
@@ -109,41 +110,30 @@ function showProducts() {
     }
 }; 
 
-function getProductDetails() {
+// GET URL var van ID variabele 
 
-    $id = "";
+function getProductDetails($id) {
     $conn = connectToDatabase();
-    $sql = "SELECT * from products WHERE id= '".$id."'";
+    $sql = "SELECT * from products WHERE id=".$id;
     $result = mysqli_query($conn, $sql);
 
-    while($products = mysqli_fetch_assoc($result)) {
-    
-        switch($sql){
-            case "1":
-                $id = 1;
+    if(!$result) {
+        throw new Exception("Product details could not be retrieved, SQL: " . $sql . "error" . mysqli_error($conn));
+    } else{
+        $productDetails = mysqli_fetch_assoc($result);
                 echo '
-                <div class="products">  <img src="Images/' .  $products["filename"] .'" width="500">
-                <h4>' . $products["name"] . ' <br>
-                €' . $products["price"] . ' <br></h4>
-                ' . $products["description"] . ' </div> ';
-
-            case "2":
-                $id = 2;
-                echo '
-                <div class="products">  <img src="Images/' .  $products["filename"] .'" width="500">
-                <h4>' . $products["name"] . ' <br>
-                €' . $products["price"] . ' <br></h4>
-                ' . $products["description"] . ' </div> ';
-
+                <div class="products">  <img src="Images/' .  $productDetails["filename"] .'" width="200">
+                <h4>' . $productDetails["name"] . ' <br>
+                €' . $productDetails["price"] . ' <br></h4>
+                ' . $productDetails["description"] . ' </div> ';
         }
-    }
-    mysqli_close($conn);
-    
-
-    
+        return $productDetails;
+        mysqli_close($conn);
 };
+    
 
-  
+
+
 
 
 ?>

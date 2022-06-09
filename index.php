@@ -150,8 +150,9 @@ function endDocument() {
 // Needs the $page variable included as it is different for each webpage
 
 function showHeader($page) {
-    echo " <h1> Welkom op mijn website <br> Je bent je nu op de  ".$page. " pagina! </h1>";     
+    echo ' <h1> Welkom op mijn website! <br></h1>';     
 };
+
 
 // This function shows the navigation menu:
 function showMenu($data) {
@@ -212,9 +213,10 @@ function showContent($data){
             showWebshopContent();
             break;
         
-        case "product details" :
+        case "product_details" :
             require_once("product_details.php");
-            showProductDetails();
+            $id = getUrlVar('id');
+            showProductDetails($id);
             break;
             
         case "other" :
