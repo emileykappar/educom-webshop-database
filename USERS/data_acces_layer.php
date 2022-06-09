@@ -93,10 +93,11 @@ function showProducts() {
             throw new Exception("Webshop could not be retrieved, SQL: " . $sql . "error" . mysqli_error($conn));
         } else {
             while($products =  mysqli_fetch_assoc($result)) {
-                echo '<form method="GET" action="index.php"> 
-                <input type="image" src="Images/'.$products["filename"].'" > <br>
+                echo '<form method="GET" action="index.php">  
+                <div class="products">
+                <input type="image" src="Images/'.$products["filename"].'" style="width:150px" > <br>
                 ' . $products["name"] . ' <br>
-                €' . $products["price"] . ' <br>
+                €' . $products["price"] . ' <br></div>
                 <input type="hidden" name="page" value="product_details">
                 <input type="hidden" name="id" value="'.$products["id"].'">
                 

@@ -84,8 +84,7 @@ button.submit{/* The submit button is styled here*/
 .products{
 	float: left;
 	width: 20%;
-	margin: 20px;
-	display: inline;
+
 }
 footer{ /* Changes the footer style */
 	position: fixed;
