@@ -65,22 +65,26 @@ function processRequest($page) {
 
         case "webshop":
             require_once("webshop.php");
-            //if(method="GET") {}
-        
+
         break;
 
         case "product details":
             require_once("product_details.php");
-            
+
+        break;
+
+        case "shoppingcart":
+            require_once("shoppingcart.php");
             
 
             
     }
-    // $page into $data array
+    // put $page into $data array
     $data['page'] = $page;
     $data['menu'] = array("home" => " Home ", "about" => " About ", "contact" => " Contact ", "webshop" => " Webshop ");
     if (isUserLoggedIn()) {
         $data['menu']['logout'] = " Log uit - " . getLoggedInUserName() . " ";
+        $data['menu']['shoppingcart'] = " Winkelwagen ";
     } else {
         $data['menu']['register'] = " Registreren ";
         $data['menu']['login'] = " Log in ";
@@ -210,13 +214,19 @@ function showContent($data){
 
         case "webshop" :
             require_once("webshop.php");
-            showWebshopContent();
+            showWebshop();
+
             break;
         
         case "product_details" :
             require_once("product_details.php");
             $id = getUrlVar('id');
             showProductDetails($id);
+            break;
+
+        case "shoppingcart" :
+            require_once("shoppingcart.php");
+            showCartContent();
             break;
             
         case "other" :

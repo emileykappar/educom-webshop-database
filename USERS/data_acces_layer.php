@@ -82,35 +82,7 @@ function storeUser($name, $email, $password) {
         mysqli_close($conn);
        
 };
-
-function showProducts() {
-    $conn = connectToDatabase();
-    $sql = "SELECT id, filename, name, price FROM products";
-
-    try {
-        $result = mysqli_query($conn, $sql);
-        if(!$result) {
-            throw new Exception("Webshop could not be retrieved, SQL: " . $sql . "error" . mysqli_error($conn));
-        } else {
-            while($products =  mysqli_fetch_assoc($result)) {
-                echo '<form method="GET" action="index.php">  
-                <div class="products">
-                <input type="image" src="Images/'.$products["filename"].'" style="width:150px" > <br>
-                ' . $products["name"] . ' <br>
-                €' . $products["price"] . ' <br></div>
-                <input type="hidden" name="page" value="product_details">
-                <input type="hidden" name="id" value="'.$products["id"].'">
-                
-                </form>';  
-            }
-        return $products;
-        }  
-    }
-    finally {
-    mysqli_close($conn);
-    }
-}; 
-
+ 
 // GET URL var van ID variabele 
 
 function getProductDetails($id) {
@@ -118,19 +90,41 @@ function getProductDetails($id) {
     $sql = "SELECT * from products WHERE id=".$id;
     $result = mysqli_query($conn, $sql);
 
-    if(!$result) {
-        throw new Exception("Product details could not be retrieved, SQL: " . $sql . "error" . mysqli_error($conn));
-    } else{
-        $productDetails = mysqli_fetch_assoc($result);
-                echo '
-                <div class="products">  <img src="Images/' .  $productDetails["filename"] .'" width="200">
-                <h4>' . $productDetails["name"] . ' <br>
-                €' . $productDetails["price"] . ' <br></h4>
-                ' . $productDetails["description"] . ' </div> ';
+    try {
+        if(!$result) {
+            throw new Exception("Product details could not be retrieved, SQL: " . $sql . "error" . mysqli_error($conn));
+        } else{
+            $productDetails = mysqli_fetch_assoc($result);
+                if(isset($_SESSION["login"])) {
+                    echo '
+                    <div class="products">  <img src="Images/' .  $productDetails["filename"] .'" width="200">
+                    <h4>' . $productDetails["name"] . ' <br>
+                    €' . $productDetails["price"] . ' <br></h4>
+                    ' . $productDetails["description"] . ' <br><br></div> 
+                
+                    <form method="POST" action="index.php">
+                    <input type="submit" value="Add to cart"/>
+                    <input type="hidden" name="page" value="shoppingcart">
+                    </div></div>
+                    </form>';
+                } else {
+                    echo '
+                    <div class="products">  <img src="Images/' .  $productDetails["filename"] .'" width="200">
+                    <h4>' . $productDetails["name"] . ' <br>
+                    €' . $productDetails["price"] . ' <br></h4>
+                    ' . $productDetails["description"] . '</div> ';
+                }
         }
         return $productDetails;
-        mysqli_close($conn);
+    }
+    finally {
+    mysqli_close($conn);
+    }
 };
+
+
+
+
     
 
 
