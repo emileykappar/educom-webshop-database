@@ -90,13 +90,26 @@ button.submit{/* The submit button is styled here*/
 	width: 20%; 	
 }
 input[type=submit]{
-	background-color: lightblue;
+	background-color: lightslategray;
   	border: none;
   	color: white;
 	font-family: "Times New Roman";
 	font-size: 15px; 
 	border:1px solid black;
 
+}
+.emptyCart{
+  	border: 1px solid black;
+	border-radius: 15px;
+  	color: white;
+  	padding: 20px;
+  	text-align: center;
+  	text-decoration: none;
+  	display: inline-block;
+	font-family: "Times New Roman";
+  	font-size: 15px;
+  	margin: 4px 2px;
+  	cursor: pointer;
 }
 footer{ /* Changes the footer style */
 	position: fixed;

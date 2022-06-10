@@ -1,5 +1,6 @@
 <?php
 
+
 // Set session variables for login and logout
 session_start();
 
@@ -15,32 +16,15 @@ function getLoggedInUserName() {
     return $_SESSION["login"];
 };
 
-function addToCart() {
-    if(isset($_POST["add_to_cart"])) {
+function getCart() {
+    if (!(isset($_SESSION["cart"]))) {
+    $_SESSION["cart"] = array(); // if the cart session doesn't exist; it is created.
+    }
+};
 
-        if(isset($_SESSION["shopping_cart"])) {
-
-            $session_array_id = array_column($_SESSION["shopping_cart"], "id");
-
-            if (!in_array($_GET['id'], $session_array_id)) {
-                $session_array = array(
-                    "id" => $_GET["id"],
-                    "name" => $_POST["name"],
-                    "price" => $_POST["price"],
-                    "quantity" => $_POST_["quantity"]
-                );
-                $_SESSION["shopping_cart"] = $session_array;
-            }
-                } else {
-        
-                $session_array = array(
-                    "id" => $_GET["id"],
-                    "name" => $_POST["name"],
-                    "price" => $_POST["price"],
-                    "quantity" => $_POST_["quantity"]
-                );
-                $_SESSION["shopping_cart"] = $session_array;
-                }
+function clearCart() { // empty shopping cart
+    if(isset($_GET["empty"])) {
+        $_SESSION["cart"] = array(); // if "empty" is clicked on, the session cart becomes an empty array.
     }
 };
 

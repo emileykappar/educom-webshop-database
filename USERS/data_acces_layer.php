@@ -104,7 +104,7 @@ function getProductDetails($id) {
                 
                     <form method="POST" action="index.php">
                     <input type="submit" value="Add to cart"/>
-                    <input type="hidden" name="page" value="shoppingcart">
+                    <input type="hidden" name="page" value="webshop">
                     </div></div>
                     </form>';
                 } else {
@@ -121,6 +121,7 @@ function getProductDetails($id) {
     mysqli_close($conn);
     }
 };
+
 
 
 
