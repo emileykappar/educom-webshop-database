@@ -2,6 +2,7 @@
 <?php
 
 //////////////////// This is the main application webshop DATABASE //////////////////////
+ 
 
 // start session in session manager
 require_once("session_manager.php");
@@ -64,19 +65,33 @@ function processRequest($page) {
         break;
 
         case "webshop":
+            processActions();
             require_once("webshop.php");
+            try {
+                $data["products"] = getWebshopProducts();
+             } catch (Exception $e) {
+               $data["genericErr"] = "Er is iets misgegaan, probeer het later nogmaals";
+               LogError("Get Webshop Products failed: " . $e -> getMessage() );
+            } 
 
         break;
 
-        case "product details":
+        case "product_details":
+            processActions();
             require_once("product_details.php");
+            try {
+                $id = getUrlVar("id");
+                $data["productDetails"] = getProductDetails($id);
+             } catch (Exception $e) {
+               $data["genericErr"] = "Er is iets misgegaan, probeer het later nogmaals";
+               LogError("Get Product Details failed: " . $e -> getMessage() );
+            } 
 
         break;
 
         case "shoppingcart":
+            processActions();
             require_once("shoppingcart.php");
-            
-
             
     }
     // put $page into $data array
@@ -91,6 +106,23 @@ function processRequest($page) {
     }
     return $data;
 };
+
+function processActions() {
+    $action = getUrlVar("action");
+    switch($action) {
+        case "clear_cart":
+            clearCart();
+            break;
+
+        case "add_to_cart":
+            $id = getUrlVar("id");
+            $quantity = getUrlVar("quantity");
+            addToCart($id, $quantity);
+            break;
+        
+
+    }
+}
 
 // Show the requested page 
 function showResponsePage($data) {
@@ -214,14 +246,12 @@ function showContent($data){
 
         case "webshop" :
             require_once("webshop.php");
-            showWebshop();
-
+            showWebshop($data);
             break;
         
         case "product_details" :
             require_once("product_details.php");
-            $id = getUrlVar('id');
-            showProductDetails($id);
+            showProductDetails($data);
             break;
 
         case "shoppingcart" :

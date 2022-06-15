@@ -30,7 +30,6 @@ ul.navBar li > a {
 	background-color: lightblue;
 	color: white;
 	border:1px solid black;
-	
 }
 label{
 	width:120px;
@@ -67,7 +66,7 @@ label.contact{
 	font-size: 12px;
 	color: dimgrey;
 }
-select{ /* Dropdown menu is styled here*/
+select{ /*  menu is styled here*/
 	background-color: white;
 	font-size: 12px;
 	color: dimgrey;
@@ -76,11 +75,20 @@ select{ /* Dropdown menu is styled here*/
 	font-size: 12px;
 	color: dimgrey;
 }
-button.submit{/* The submit button is styled here*/
+table{
+	background-color: white;
+	width:800px;
+	text-align: left;
+	margin: auto;
+	font-size: 12px;
+	color: dimgrey;
+}
+button[type=submit]{/* The submit button is styled here*/
 	background-color: white;
 	color: dimgrey;
 	font-size: 12px;
 	padding: 6px 20px;
+	cursor: pointer;
 }
 .productContainer{
 	display: inline;
@@ -93,25 +101,18 @@ input[type=submit]{
 	background-color: lightslategray;
   	border: none;
   	color: white;
+	border:1px solid black;
+	cursor: pointer; 
+}
+.emptyShoppingcart{
+	background-color: lightcoral;
+  	border: none;
+  	color: white;
 	font-family: "Times New Roman";
 	font-size: 15px; 
 	border:1px solid black;
-
+	cursor: pointer;
 }
-.emptyCart{
-  	border: 1px solid black;
-	border-radius: 15px;
-  	color: white;
-  	padding: 20px;
-  	text-align: center;
-  	text-decoration: none;
-  	display: inline-block;
-	font-family: "Times New Roman";
-  	font-size: 15px;
-  	margin: 4px 2px;
-  	cursor: pointer;
-}
-
 footer{ /* Changes the footer style */
 	position: fixed;
     left: 0;
