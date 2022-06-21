@@ -1,11 +1,10 @@
 <?php
-
-
 // Set session variables for login and logout
 session_start();
 
-function doLoginUser($name) {
+function doLoginUser($name, $userID) {
     $_SESSION["login"] = $name;
+    $_SESSION["id"] = $userID; // puts the users' ID in the session
 };
 
 function isUserLoggedIn() {
@@ -14,6 +13,10 @@ function isUserLoggedIn() {
 
 function getLoggedInUserName() {
     return $_SESSION["login"];
+};
+
+function getCustomerID(){
+    return $_SESSION["id"];
 };
 
 function getCart() {
@@ -32,7 +35,7 @@ function addToCart($id, $quantity){
         } else {
             $_SESSION["cart"][$id] = $quantity; // else; quantity is added to empty cart
         } 
-        print_r($_SESSION["cart"]);
+        print_r($_SESSION["cart"]); // print the cart to check what products were added
     } 
 };
 
@@ -44,4 +47,5 @@ function doLogoutUser() {
     session_unset();
     session_destroy(); 
 }
+
 ?>

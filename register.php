@@ -67,7 +67,7 @@ function showRegisterForm($data) { // Show the next part only when $valid is fal
     <form method="POST" action="index.php">
   <p><span class="error">* Verplicht </span></p>
   
-  <label for="name">Naam:</label>
+  <label for="name">Voornaam:</label>
   <input type="text" name="name" id="email" value= "' . $data['name'] . '">
   <span class="error">* ' . $data['nameError'] . ' </span>
   <br>

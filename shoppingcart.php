@@ -17,7 +17,7 @@ function showCartContent() {
                 <th><h3>Subtotaal<h3></th>
             </tr>
         ';
-        retrieveCartContent();
+        retrieveCartContent(); // in data layer 
 
         // create empty shopping cart button to display on webpage but ONLY when user is logged in
         echo '
@@ -32,16 +32,12 @@ function showCartContent() {
         echo '
         <form method="GET" action="index.php">  
             <input type="hidden" name="page" value="webshop">
-            <input type="hidden" name="action" value="clear_cart">
+            <input type="hidden" name="action" value="place_order">
             <input class="orderButton" type="submit" name="placeOrder" value="Bestelling plaatsen"> ';
         echo '
         </form>';
     }
-    
 };
-
-
-
 
 ?>
 

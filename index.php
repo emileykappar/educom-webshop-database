@@ -8,7 +8,7 @@
 require_once("session_manager.php");
 
 // include database
-include_once 'USERS/data_acces_layer.php';
+include_once 'data_acces_layer.php';
 
 // variable $page is defined to bring user to the right webpage with GET or POST request
 $page = getRequestedPage();
@@ -42,6 +42,7 @@ function processRequest($page) {
             $data = validateRegister();
             if ($data['valid']) {
                 storeUser($data['name'], $data['email'], $data['password']);
+                //storeUser($data['name'], $data['email'], $data['password']);
                 $page = "login";
             }
         break;
@@ -50,7 +51,7 @@ function processRequest($page) {
 			require_once("login.php");
 			$data = validateLogin();
 			if ($data['valid']) {
-                doLoginUser($data['name']);
+                doLoginUser($data['name'], $data['id']);
 				$page = "home";
             } 
 		break;
@@ -92,6 +93,7 @@ function processRequest($page) {
         case "shoppingcart":
             processActions();
             require_once("shoppingcart.php");
+
             
     }
     // put $page into $data array
@@ -120,7 +122,12 @@ function processActions() {
             addToCart($id, $quantity);
             break;
         
-
+        case "place_order":
+            $userID =  getCustomerID();
+            placeOrder($userID);
+            productInfoToDB();
+            clearCart();
+            break;
     }
 }
 

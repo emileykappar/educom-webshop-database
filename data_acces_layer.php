@@ -35,10 +35,11 @@ function findUserByEmail($email) {
     
         if(!$result) {
             throw new Exception("Find user query failed, SQL: " . $sql . "error" . mysqli_error($conn));
-        } else { 
-            $user = mysqli_fetch_assoc($result); // fetches a row from table as an associative array, $result is required!
-            // var_dump($user);
-            return $user;
+        } else {
+          $user = array();
+          $user = mysqli_fetch_assoc($result); // fetches a row from table as an associative array, $result is required!
+          //var_dump($user);
+          return $user;
         }
     }
     finally {
@@ -102,11 +103,11 @@ function retrieveCartContent() {
         echo 'Je winkelwagen is nog leeg';
     } else {
     $total = 0;
-    foreach($_SESSION["cart"] as $productNumbers => $quantities) { // $quantities of the product, comes from the session.
+    foreach($_SESSION["cart"] as $productID => $quantities) { // $quantities of the product, comes from the session.
         $conn = connectToDatabase();
-        $sql= "SELECT * FROM products WHERE id=".$productNumbers; 
+        $sql= "SELECT * FROM products WHERE id=".$productID; 
         $result = mysqli_query($conn, $sql);
-
+    
         if(!$result) {
             echo 'Retrieving data for shoppingcart failed, SQL: ' . $sql . 'error' . mysqli_error($conn);
         } else {
@@ -128,43 +129,75 @@ function retrieveCartContent() {
         </td></tr>
         ';
     }
-};
-
-function getCustomerID($user) {
-    $customer = findUserByEmail($user);
-    var_dump($user);
-    $customerID = $user["id"];
 
 };
 
-function placeOrder($customerID, $id) {
-    // send "orders" details to the database;
-    $date = date("y/m/d");
-    $conn = connectToDatabase(); // $conn now holds the function that creates the connection with the DB
-    $sql = "INSERT INTO orders (customerID, shipDate ) VALUES ('$customerID','$date')";
-    $result = mysqli_query($conn, $sql);
-
-    try {
-        if(!$result) {
-            echo 'Store order details query failed, SQL: ' . $sql . 'error' . mysqli_error($conn);
-
-        } else {
-
-            // send "orders product" details to the database;
-            $conn = connectToDatabase(); // $conn now holds the function that creates the connection with the DB
-            $ordersID = "SELECT LAST_INSERT_ID()";
-            $sql = "INSERT INTO orders product (ordersID, productID ) VALUES ('$ordersID', '$id')";
+function productInfoToDB() {
+    if (empty($_SESSION["cart"])) {
+        echo 'Je winkelwagen is nog leeg';
+    } else {
+        foreach($_SESSION["cart"] as $productID => $quantities) {
+            $conn = connectToDatabase();
+            $sql = "INSERT INTO orders_product (productID, quantity) VALUES ('$productID', '$quantities')";
             $result = mysqli_query($conn, $sql);
-        
-            if(!$result) {
-            echo 'Store orders-product info query failed, SQL: ' . $sql . 'error' . mysqli_error($conn);
+        }
+    }
+};
+
+
+function getProductID() {
+    if (empty($_SESSION["cart"])) {
+        echo 'Je winkelwagen is nog leeg';
+    } else {
+        foreach($_SESSION["cart"] as $productID => $quantities) { // $quantities of the product, comes from the session.
+            $conn = connectToDatabase();
+            $sql= "SELECT * FROM products WHERE id=".$productID; 
+            $result = mysqli_query($conn, $sql);
+        }
+    }
+};
+
+function getProductQuantity() {
+    if (empty($_SESSION["cart"])) {
+        echo 'Je winkelwagen is nog leeg';
+    } else {
+        foreach($_SESSION["cart"] as $productID => $quantities) { // $quantities of the product, comes from the session.
+            $conn = connectToDatabase();
+            $sql= "SELECT * FROM products WHERE id=".$productID; 
+            $result = mysqli_query($conn, $sql);
+            while($products = mysqli_fetch_assoc($result)) {
+                return $quantities;
             }
         }
     }
-    finally {
-    mysqli_close($conn);
+};
+
+function placeOrder($userID) {
+    // send the order details to the database
+    $date = date("y/m/d");
+    $conn = connectToDatabase(); // $conn now holds the function that creates the connection with the DB
+    $sql = "INSERT INTO orders (customerID, shipDate) VALUES ('$userID','$date')";
+    $result = mysqli_query($conn, $sql);
+
+    if (!$result){
+        echo 'Place order query failed, SQL: ' . $sql . 'error' . mysqli_error($conn);
+    } else {
+        //connect ordered products+quantities with the order details
+        echo 'Sent to ORDERS: created successfully <br>';
+        $last_id = mysqli_insert_id($conn);
+        //$productID = getProductID();
+        //$quantities = getProductQuantity();
+        $sql = "INSERT INTO orders_product (ordersID) VALUES ('$last_id')";
+        $result = mysqli_query($conn, $sql);
+
+        if ($result) {
+            echo 'New records created successfully';
+        } else {
+            echo 'Error: ' . $sql .'<br>' . mysqli_error($conn);
+        }
+        mysqli_close($conn);
     }
-       
+    
 };
 
 

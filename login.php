@@ -5,7 +5,7 @@ function validateLogin() {
     // Create the variables that will be used
     $email = $password = ""; // Empty variables as they will be declared/filled in by the user that registers on the website 
     $emailError = $passwordError = ""; // Empty variables as they will be declared later in the function
-    $username = $userPassword = $name = "";
+    $username = $userPassword = $name = $userID = "";
     $valid = false;
     
     if ($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -31,6 +31,8 @@ function validateLogin() {
                     $emailError = "Gebruiker niet bekend of wachtwoord incorrect";
                 } else {
                     $name = $user['name'];
+                    $userID = $user['id'];
+                    //var_dump($userID);
                     $valid = true;
                 }
             } catch (Exception $e) { // if there is an exception, this catch echo's the Exception message. 
@@ -41,7 +43,7 @@ function validateLogin() {
     }
    
     return array("email" => $email, "emailError" => $emailError, "password" => $password, 
-                 "passwordError" => $passwordError,"name" => $name, "valid" => $valid);
+                 "passwordError" => $passwordError,"name" => $name, "id" => $userID, "valid" => $valid);
 
 };
 	

@@ -104,15 +104,6 @@ input[type=submit]{
 	border:1px solid black;
 	cursor: pointer; 
 }
-.emptyShoppingcart{
-	background-color: lightcoral;
-  	border: none;
-  	color: white;
-	font-family: "Times New Roman";
-	font-size: 15px; 
-	border:1px solid black;
-	cursor: pointer;
-}
 footer{ /* Changes the footer style */
 	position: fixed;
     left: 0;
