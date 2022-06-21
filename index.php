@@ -125,7 +125,6 @@ function processActions() {
         case "place_order":
             $userID =  getCustomerID();
             placeOrder($userID);
-            productInfoToDB();
             clearCart();
             break;
     }

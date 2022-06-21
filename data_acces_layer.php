@@ -180,20 +180,16 @@ function placeOrder($userID) {
     $result = mysqli_query($conn, $sql);
 
     if (!$result){
-        echo 'Place order query failed, SQL: ' . $sql . 'error' . mysqli_error($conn);
+        echo 'Error: Kan geen connectie maken met database. Order kan niet worden geplaatst ' . $sql . 'error' . mysqli_error($conn);
     } else {
         //connect ordered products+quantities with the order details
-        echo 'Sent to ORDERS: created successfully <br>';
-        $last_id = mysqli_insert_id($conn);
-        //$productID = getProductID();
-        //$quantities = getProductQuantity();
-        $sql = "INSERT INTO orders_product (ordersID) VALUES ('$last_id')";
-        $result = mysqli_query($conn, $sql);
-
-        if ($result) {
-            echo 'New records created successfully';
-        } else {
-            echo 'Error: ' . $sql .'<br>' . mysqli_error($conn);
+        $last_id = mysqli_insert_id($conn); // generates the last ID used in a connection. This will return the orderID, to connect to the orders_products table later. 
+        foreach($_SESSION["cart"] as $productID => $quantities) { // for each product in the cart, insert the productID and quantity to the DB
+            $sql = "INSERT INTO orders_product (ordersID, productID, quantity) VALUES ('$last_id', '$productID', '$quantities')";
+            $result = mysqli_query($conn, $sql);
+        }
+        if (!$result) {
+            echo 'Error: Order kan niet worden geplaatst. Probeer later nog eens. ' . $sql .'<br>' . mysqli_error($conn);
         }
         mysqli_close($conn);
     }
