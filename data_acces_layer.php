@@ -116,6 +116,7 @@ function retrieveCartContent() {
             $subtotal = number_format($subtotal_calculate, 2, '.', ',');
             $total += $subtotal; // $total is 0 + the subtotal.
         }
+        //////////////// dit stuk moet naar shoppingcart.php
         echo '<div class="cartTable">
             <tr>';
                 echo ' <td>'.$products["name"].' </td> '; // shows all product names that are in cart
@@ -128,47 +129,6 @@ function retrieveCartContent() {
         echo '<tr><td colspan="4"><h3>Totaalprijs €'.$total.'</h3>
         </td></tr>
         ';
-    }
-
-};
-
-function productInfoToDB() {
-    if (empty($_SESSION["cart"])) {
-        echo 'Je winkelwagen is nog leeg';
-    } else {
-        foreach($_SESSION["cart"] as $productID => $quantities) {
-            $conn = connectToDatabase();
-            $sql = "INSERT INTO orders_product (productID, quantity) VALUES ('$productID', '$quantities')";
-            $result = mysqli_query($conn, $sql);
-        }
-    }
-};
-
-
-function getProductID() {
-    if (empty($_SESSION["cart"])) {
-        echo 'Je winkelwagen is nog leeg';
-    } else {
-        foreach($_SESSION["cart"] as $productID => $quantities) { // $quantities of the product, comes from the session.
-            $conn = connectToDatabase();
-            $sql= "SELECT * FROM products WHERE id=".$productID; 
-            $result = mysqli_query($conn, $sql);
-        }
-    }
-};
-
-function getProductQuantity() {
-    if (empty($_SESSION["cart"])) {
-        echo 'Je winkelwagen is nog leeg';
-    } else {
-        foreach($_SESSION["cart"] as $productID => $quantities) { // $quantities of the product, comes from the session.
-            $conn = connectToDatabase();
-            $sql= "SELECT * FROM products WHERE id=".$productID; 
-            $result = mysqli_query($conn, $sql);
-            while($products = mysqli_fetch_assoc($result)) {
-                return $quantities;
-            }
-        }
     }
 };
 

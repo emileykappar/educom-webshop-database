@@ -101,7 +101,7 @@ function processRequest($page) {
     $data['menu'] = array("home" => " Home ", "about" => " About ", "contact" => " Contact ", "webshop" => " Webshop ");
     if (isUserLoggedIn()) {
         $data['menu']['logout'] = " Log uit - " . getLoggedInUserName() . " ";
-        $data['menu']['shoppingcart'] = " Winkelwagen ";
+        $data['menu']['shoppingcart'] = " Winkelwagen";
     } else {
         $data['menu']['register'] = " Registreren ";
         $data['menu']['login'] = " Log in ";
@@ -126,6 +126,8 @@ function processActions() {
             $userID =  getCustomerID();
             placeOrder($userID);
             clearCart();
+            require_once("webshop.php");
+            orderPlaced();
             break;
     }
 }

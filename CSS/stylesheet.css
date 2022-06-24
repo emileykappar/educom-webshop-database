@@ -104,6 +104,14 @@ input[type=submit]{
 	border:1px solid black;
 	cursor: pointer; 
 }
+.orderPlaced{
+	background-color: white;
+  	width:800px;
+  	text-align: left;
+  	margin: auto;
+  	font-size: 12px;
+  	color: dimgrey;
+}
 footer{ /* Changes the footer style */
 	position: fixed;
     left: 0;

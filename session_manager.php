@@ -35,7 +35,7 @@ function addToCart($id, $quantity){
         } else {
             $_SESSION["cart"][$id] = $quantity; // else; quantity is added to empty cart
         } 
-        print_r($_SESSION["cart"]); // print the cart to check what products were added
+        // print_r($_SESSION["cart"]); // print the cart to check what products were added
     } 
 };
 

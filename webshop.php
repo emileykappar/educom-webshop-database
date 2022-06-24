@@ -40,7 +40,6 @@ function showWebshop($data) {
 
                     
                 </form>';
-//<button <input type="submit" value="Toevoegen" style="width:150px"/>
         };
         echo '</div>';
             
@@ -48,6 +47,13 @@ function showWebshop($data) {
     echo '</div>';   
     
 };
+
+function orderPlaced() {
+    echo '<div class="orderPlaced"><span>';
+    echo '<p>Je bestelling is geplaatst!</p>';
+    echo '</div></span>';
+};
+
 ?>
             
 
