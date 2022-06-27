@@ -24,8 +24,9 @@ function connectToDatabase() {
 // find user by email to see if user exitst (login form)
 function findUserByEmail($email) {
    
-    // set variables 
+    // set variables
     $conn = connectToDatabase(); // $conn now holds the function that creates the connection with the DB
+    $email = mysqli_real_escape_string($conn, $email);
     $sql = "SELECT * FROM users WHERE email = '".$email."' "; // selects the right email from DB
     
     try {// function is triggered in a "try" block: so if the email is found and there is no exception the normal code is executed
@@ -56,20 +57,28 @@ function storeUser($name, $email, $password) {
  
     // set variables 
     $conn = connectToDatabase(); // $conn now holds the function that creates the connection with the DB
+    $name = mysqli_real_escape_string($conn, $name);
+    $email = mysqli_real_escape_string($conn, $email);
+    $password = mysqli_real_escape_string($conn, $password);
     $sql = "INSERT INTO users (name, email, password) VALUES ('$name', '$email', '$password') "; // insert new user into DB
           
-    $result = mysqli_query($conn, $sql);
+    try {
+        $result = mysqli_query($conn, $sql);
         if(!$result) {
-            echo 'Store new user query failed, SQL: ' . $sql . 'error' . mysqli_error($conn);
+            throw new Exception('Store new user query failed, SQL: ' . $sql . 'error' . mysqli_error($conn));
         }
-        mysqli_close($conn);
-       
+    }
+    finally {
+    mysqli_close($conn);
+    }
+  
 };
 
 function getWebshopProducts() {
     // create connection with database & retrieve products 
     $conn = connectToDatabase();
     $sql = "SELECT id, filename, name, price FROM products";
+
     $result = mysqli_query($conn, $sql);
     
     if(!$result) {
@@ -86,6 +95,7 @@ function getWebshopProducts() {
 
 function getProductDetails($id) {
     $conn = connectToDatabase();
+    $id = mysqli_real_escape_string($conn, $id);
     $sql = "SELECT * from products WHERE id=".$id;
     $result = mysqli_query($conn, $sql);
 
@@ -105,17 +115,19 @@ function retrieveCartContent() {
     $total = 0;
     foreach($_SESSION["cart"] as $productID => $quantities) { // $quantities of the product, comes from the session.
         $conn = connectToDatabase();
+        $productID = mysqli_real_escape_string($conn, $productID);
         $sql= "SELECT * FROM products WHERE id=".$productID; 
         $result = mysqli_query($conn, $sql);
     
         if(!$result) {
-            echo 'Retrieving data for shoppingcart failed, SQL: ' . $sql . 'error' . mysqli_error($conn);
+            throw new Exception('Retrieving data for shoppingcart failed, SQL: ' . $sql . 'error' . mysqli_error($conn));
         } else {
             $products = mysqli_fetch_assoc($result);
-            $subtotal_calculate = ($quantities * (int)$products["price"]); // int() converts the value to an integer, so the number can be shown correctly.
-            $subtotal = number_format($subtotal_calculate, 2, '.', ',');
+            $subtotal_calculate = $quantities * $products["price"];
+            $subtotal = number_format($subtotal_calculate, 2, '.', ','); // number format added to show subtotal correctly
             $total += $subtotal; // $total is 0 + the subtotal.
         }
+
         //////////////// dit stuk moet naar shoppingcart.php
         echo '<div class="cartTable">
             <tr>';
@@ -136,11 +148,14 @@ function placeOrder($userID) {
     // send the order details to the database
     $date = date("y/m/d");
     $conn = connectToDatabase(); // $conn now holds the function that creates the connection with the DB
+    $userID = mysqli_real_escape_string($conn, $userID);
+    $date = mysqli_real_escape_string($conn, $date);
     $sql = "INSERT INTO orders (customerID, shipDate) VALUES ('$userID','$date')";
-    $result = mysqli_query($conn, $sql);
+    try {
+        $result = mysqli_query($conn, $sql);
 
     if (!$result){
-        echo 'Error: Kan geen connectie maken met database. Order kan niet worden geplaatst ' . $sql . 'error' . mysqli_error($conn);
+        throw new Exception('Error: Kan geen connectie maken met database. Order kan niet worden geplaatst ' . $sql . 'error' . mysqli_error($conn));
     } else {
         //connect ordered products+quantities with the order details
         $last_id = mysqli_insert_id($conn); // generates the last ID used in a connection. This will return the orderID, to connect to the orders_products table later. 
@@ -151,9 +166,11 @@ function placeOrder($userID) {
         if (!$result) {
             echo 'Error: Order kan niet worden geplaatst. Probeer later nog eens. ' . $sql .'<br>' . mysqli_error($conn);
         }
+    }
+    }
+    finally {
         mysqli_close($conn);
     }
-    
 };
 
 
