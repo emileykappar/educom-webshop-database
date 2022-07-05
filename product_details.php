@@ -15,7 +15,7 @@ function showProductDetails($data) {
 
     echo '
         <div class="products">  <img src="Images/' .$product["filename"] .'" width="200">
-        <h4>' . $product["name"] . '<br> €' . $product["price"] . ' <br></h4> ' . $product["description"] . '</div> ';
+        <h4>' . $product["name"] . '<br> &euro;' . $product["price"] . ' <br></h4> ' . $product["description"] . '</div> ';
 
     if(isUserLoggedIn()) {
     echo '

@@ -24,7 +24,7 @@ function showWebshop($data) {
     //var_dump($data["product"]); 
     echo '<div class="productList">
             <form method="GET" action="index.php"> 
-                <input type="image" src="Images/'.$product["filename"].'" style="width:150px;height:150px;" > <br> ' . $product["name"] . ' <br> €' . $product["price"] . ' <br>
+                <input type="image" src="Images/'.$product["filename"].'" style="width:150px;height:150px;" > <br> ' . $product["name"] . ' <br> &euro;' . $product["price"] . ' <br>
                 <input type="hidden" name="page" value="product_details">
                 <input type="hidden" name="id" value="'.$product["id"].'">
             </form>'; 

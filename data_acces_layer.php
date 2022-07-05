@@ -132,7 +132,7 @@ function retrieveCartContent() {
         echo '<div class="cartTable">
             <tr>';
                 echo ' <td>'.$products["name"].' </td> '; // shows all product names that are in cart
-                echo ' <td>€ '.$products["price"].' </td> '; // shows the price
+                echo ' <td> &euro; '.$products["price"].' </td> '; // shows the price
                 echo ' <td>'.$quantities.'</td> '; // shows the quantity
                 echo ' <td>€ '.$subtotal.'</td> '; // shows the subtotal 
         echo '</tr></div>';
